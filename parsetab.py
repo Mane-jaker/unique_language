@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND ASSIGN COMMA DECIMAL EQ FLOAT FOR GT ID IF IN INPUT INT LBRACE LPAREN LT NUMBER PLUS RANGE RBRACE RPAREN SEMICOLON STRING TEXT WHILEprogram : statementsstatements : statement\n                      | statement statementsstatement : declaration\n                     | assignment\n                     | if_statement\n                     | while_statement\n                     | for_statement\n                     | input_statement\n                     | increment_statementdeclaration : INT ID ASSIGN NUMBER SEMICOLON\n                       | FLOAT ID ASSIGN DECIMAL SEMICOLON\n                       | STRING ID ASSIGN TEXT SEMICOLON\n                       | FLOAT ID ASSIGN NUMBER SEMICOLONassignment : ID ASSIGN expression SEMICOLONif_statement : IF LPAREN condition RPAREN LBRACE statements RBRACEwhile_statement : WHILE LPAREN condition RPAREN LBRACE statements RBRACEfor_statement : FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACEcondition : expression EQ expression\n                     | expression GT expression\n                     | expression LT expression\n                     | condition AND conditionexpression : NUMBER\n                      | DECIMAL\n                      | IDinput_statement : INPUT LPAREN TEXT RPAREN SEMICOLONincrement_statement : ID PLUS SEMICOLON'
+_lr_signature = 'leftPLUS_OPMINUS_OPleftMULT_OPDIV_OPAND ASSIGN COMMA DECIMAL DIV_OP DO ENDDO ENDWHILE EQ FLOAT FOR GT ID IF IN INPUT INT LBRACE LPAREN LT MINUS_OP MULT_OP NUMBER PLUS PLUS_OP RANGE RBRACE RPAREN SEMICOLON STRING TEXT WHILEprogram : statementsstatements : statement\n                      | statement statementsstatement : declaration\n                     | assignment\n                     | if_statement\n                     | while_statement\n                     | for_statement\n                     | input_statement\n                     | increment_statement\n                     | do_statementdeclaration : INT ID ASSIGN expression SEMICOLON\n                       | FLOAT ID ASSIGN expression SEMICOLON\n                       | STRING ID ASSIGN TEXT SEMICOLONassignment : ID ASSIGN expression SEMICOLONif_statement : IF LPAREN condition RPAREN LBRACE statements RBRACEwhile_statement : WHILE LPAREN condition RPAREN statements ENDWHILEfor_statement : FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACEdo_statement : DO statements ENDDOcondition : expression EQ expression\n                     | expression GT expression\n                     | expression LT expression\n                     | condition AND conditionexpression : NUMBER\n                      | DECIMAL\n                      | ID\n                      | expression PLUS_OP expression\n                      | expression MINUS_OP expression\n                      | expression MULT_OP expression\n                      | expression DIV_OP expressioninput_statement : INPUT LPAREN TEXT RPAREN SEMICOLONincrement_statement : ID PLUS SEMICOLON'
     
-_lr_action_items = {'INT':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[11,11,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,11,11,-26,-16,-17,11,-18,]),'FLOAT':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[13,13,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,13,13,-26,-16,-17,13,-18,]),'STRING':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[14,14,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,14,14,-26,-16,-17,14,-18,]),'ID':([0,3,4,5,6,7,8,9,10,11,13,14,21,25,26,27,34,43,48,49,50,51,55,56,57,58,59,64,66,70,71,77,79,],[12,12,-4,-5,-6,-7,-8,-9,-10,20,23,24,30,30,30,40,-27,-15,30,30,30,30,-11,-12,-14,-13,12,12,-26,-16,-17,12,-18,]),'IF':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[15,15,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,15,15,-26,-16,-17,15,-18,]),'WHILE':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[16,16,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,16,16,-26,-16,-17,16,-18,]),'FOR':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[17,17,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,17,17,-26,-16,-17,17,-18,]),'INPUT':([0,3,4,5,6,7,8,9,10,34,43,55,56,57,58,59,64,66,70,71,77,79,],[18,18,-4,-5,-6,-7,-8,-9,-10,-27,-15,-11,-12,-14,-13,18,18,-26,-16,-17,18,-18,]),'$end':([1,2,3,4,5,6,7,8,9,10,19,34,43,55,56,57,58,66,70,71,79,],[0,-1,-2,-4,-5,-6,-7,-8,-9,-10,-3,-27,-15,-11,-12,-14,-13,-26,-16,-17,-18,]),'RBRACE':([3,4,5,6,7,8,9,10,19,34,43,55,56,57,58,66,67,68,70,71,78,79,],[-2,-4,-5,-6,-7,-8,-9,-10,-3,-27,-15,-11,-12,-14,-13,-26,70,71,-16,-17,79,-18,]),'ASSIGN':([12,20,23,24,],[21,29,35,36,]),'PLUS':([12,],[22,]),'LPAREN':([15,16,17,18,65,],[25,26,27,28,69,]),'NUMBER':([21,25,26,29,35,48,49,50,51,69,73,],[32,32,32,42,45,32,32,32,32,72,74,]),'DECIMAL':([21,25,26,35,48,49,50,51,],[33,33,33,44,33,33,33,33,]),'SEMICOLON':([22,30,31,32,33,42,44,45,46,54,],[34,-25,43,-23,-24,55,56,57,58,66,]),'TEXT':([28,36,],[41,46,]),'EQ':([30,32,33,38,],[-25,-23,-24,49,]),'GT':([30,32,33,38,],[-25,-23,-24,50,]),'LT':([30,32,33,38,],[-25,-23,-24,51,]),'RPAREN':([30,32,33,37,39,41,60,61,62,63,74,75,],[-25,-23,-24,47,52,54,-22,-19,-20,-21,75,76,]),'AND':([30,32,33,37,39,60,61,62,63,],[-25,-23,-24,48,48,48,-19,-20,-21,]),'IN':([40,],[53,]),'LBRACE':([47,52,76,],[59,64,77,]),'RANGE':([53,],[65,]),'COMMA':([72,],[73,]),}
+_lr_action_items = {'INT':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[12,12,-4,-5,-6,-7,-8,-9,-10,-11,12,-32,-19,-15,12,-12,-13,-14,12,-31,-17,-16,12,-18,]),'FLOAT':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[14,14,-4,-5,-6,-7,-8,-9,-10,-11,14,-32,-19,-15,14,-12,-13,-14,14,-31,-17,-16,14,-18,]),'STRING':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[15,15,-4,-5,-6,-7,-8,-9,-10,-11,15,-32,-19,-15,15,-12,-13,-14,15,-31,-17,-16,15,-18,]),'ID':([0,3,4,5,6,7,8,9,10,11,12,14,15,20,23,27,28,29,32,37,38,45,47,48,49,50,51,55,56,57,58,59,62,67,68,69,76,78,80,86,88,],[13,13,-4,-5,-6,-7,-8,-9,-10,-11,22,25,26,13,33,33,33,43,33,-32,33,-19,-15,33,33,33,33,33,33,33,33,13,-12,-13,-14,13,-31,-17,-16,13,-18,]),'IF':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[16,16,-4,-5,-6,-7,-8,-9,-10,-11,16,-32,-19,-15,16,-12,-13,-14,16,-31,-17,-16,16,-18,]),'WHILE':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[17,17,-4,-5,-6,-7,-8,-9,-10,-11,17,-32,-19,-15,17,-12,-13,-14,17,-31,-17,-16,17,-18,]),'FOR':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[18,18,-4,-5,-6,-7,-8,-9,-10,-11,18,-32,-19,-15,18,-12,-13,-14,18,-31,-17,-16,18,-18,]),'INPUT':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[19,19,-4,-5,-6,-7,-8,-9,-10,-11,19,-32,-19,-15,19,-12,-13,-14,19,-31,-17,-16,19,-18,]),'DO':([0,3,4,5,6,7,8,9,10,11,20,37,45,47,59,62,67,68,69,76,78,80,86,88,],[20,20,-4,-5,-6,-7,-8,-9,-10,-11,20,-32,-19,-15,20,-12,-13,-14,20,-31,-17,-16,20,-18,]),'$end':([1,2,3,4,5,6,7,8,9,10,11,21,37,45,47,62,67,68,76,78,80,88,],[0,-1,-2,-4,-5,-6,-7,-8,-9,-10,-11,-3,-32,-19,-15,-12,-13,-14,-31,-17,-16,-18,]),'ENDDO':([3,4,5,6,7,8,9,10,11,21,31,37,45,47,62,67,68,76,78,80,88,],[-2,-4,-5,-6,-7,-8,-9,-10,-11,-3,45,-32,-19,-15,-12,-13,-14,-31,-17,-16,-18,]),'ENDWHILE':([3,4,5,6,7,8,9,10,11,21,37,45,47,62,67,68,74,76,78,80,88,],[-2,-4,-5,-6,-7,-8,-9,-10,-11,-3,-32,-19,-15,-12,-13,-14,78,-31,-17,-16,-18,]),'RBRACE':([3,4,5,6,7,8,9,10,11,21,37,45,47,62,67,68,76,77,78,80,87,88,],[-2,-4,-5,-6,-7,-8,-9,-10,-11,-3,-32,-19,-15,-12,-13,-14,-31,80,-17,-16,88,-18,]),'ASSIGN':([13,22,25,26,],[23,32,38,39,]),'PLUS':([13,],[24,]),'LPAREN':([16,17,18,19,75,],[27,28,29,30,79,]),'NUMBER':([23,27,28,32,38,48,49,50,51,55,56,57,58,79,82,],[35,35,35,35,35,35,35,35,35,35,35,35,35,81,83,]),'DECIMAL':([23,27,28,32,38,48,49,50,51,55,56,57,58,],[36,36,36,36,36,36,36,36,36,36,36,36,36,]),'SEMICOLON':([24,33,34,35,36,46,52,53,61,63,64,65,66,],[37,-26,47,-24,-25,62,67,68,76,-27,-28,-29,-30,]),'TEXT':([30,39,],[44,53,]),'PLUS_OP':([33,34,35,36,41,46,52,63,64,65,66,71,72,73,],[-26,48,-24,-25,48,48,48,-27,-28,-29,-30,48,48,48,]),'MINUS_OP':([33,34,35,36,41,46,52,63,64,65,66,71,72,73,],[-26,49,-24,-25,49,49,49,-27,-28,-29,-30,49,49,49,]),'MULT_OP':([33,34,35,36,41,46,52,63,64,65,66,71,72,73,],[-26,50,-24,-25,50,50,50,50,50,-29,-30,50,50,50,]),'DIV_OP':([33,34,35,36,41,46,52,63,64,65,66,71,72,73,],[-26,51,-24,-25,51,51,51,51,51,-29,-30,51,51,51,]),'EQ':([33,35,36,41,63,64,65,66,],[-26,-24,-25,56,-27,-28,-29,-30,]),'GT':([33,35,36,41,63,64,65,66,],[-26,-24,-25,57,-27,-28,-29,-30,]),'LT':([33,35,36,41,63,64,65,66,],[-26,-24,-25,58,-27,-28,-29,-30,]),'RPAREN':([33,35,36,40,42,44,63,64,65,66,70,71,72,73,83,84,],[-26,-24,-25,54,59,61,-27,-28,-29,-30,-23,-20,-21,-22,84,85,]),'AND':([33,35,36,40,42,63,64,65,66,70,71,72,73,],[-26,-24,-25,55,55,-27,-28,-29,-30,55,-20,-21,-22,]),'IN':([43,],[60,]),'LBRACE':([54,85,],[69,86,]),'RANGE':([60,],[75,]),'COMMA':([81,],[82,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statements':([0,3,59,64,77,],[2,19,67,68,78,]),'statement':([0,3,59,64,77,],[3,3,3,3,3,]),'declaration':([0,3,59,64,77,],[4,4,4,4,4,]),'assignment':([0,3,59,64,77,],[5,5,5,5,5,]),'if_statement':([0,3,59,64,77,],[6,6,6,6,6,]),'while_statement':([0,3,59,64,77,],[7,7,7,7,7,]),'for_statement':([0,3,59,64,77,],[8,8,8,8,8,]),'input_statement':([0,3,59,64,77,],[9,9,9,9,9,]),'increment_statement':([0,3,59,64,77,],[10,10,10,10,10,]),'expression':([21,25,26,48,49,50,51,],[31,38,38,38,61,62,63,]),'condition':([25,26,48,],[37,39,60,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statements':([0,3,20,59,69,86,],[2,21,31,74,77,87,]),'statement':([0,3,20,59,69,86,],[3,3,3,3,3,3,]),'declaration':([0,3,20,59,69,86,],[4,4,4,4,4,4,]),'assignment':([0,3,20,59,69,86,],[5,5,5,5,5,5,]),'if_statement':([0,3,20,59,69,86,],[6,6,6,6,6,6,]),'while_statement':([0,3,20,59,69,86,],[7,7,7,7,7,7,]),'for_statement':([0,3,20,59,69,86,],[8,8,8,8,8,8,]),'input_statement':([0,3,20,59,69,86,],[9,9,9,9,9,9,]),'increment_statement':([0,3,20,59,69,86,],[10,10,10,10,10,10,]),'do_statement':([0,3,20,59,69,86,],[11,11,11,11,11,11,]),'expression':([23,27,28,32,38,48,49,50,51,55,56,57,58,],[34,41,41,46,52,63,64,65,66,41,71,72,73,]),'condition':([27,28,55,],[40,42,70,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,31 +27,36 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> statements','program',1,'p_program','analizador.py',90),
-  ('statements -> statement','statements',1,'p_statements','analizador.py',94),
-  ('statements -> statement statements','statements',2,'p_statements','analizador.py',95),
-  ('statement -> declaration','statement',1,'p_statement','analizador.py',102),
-  ('statement -> assignment','statement',1,'p_statement','analizador.py',103),
-  ('statement -> if_statement','statement',1,'p_statement','analizador.py',104),
-  ('statement -> while_statement','statement',1,'p_statement','analizador.py',105),
-  ('statement -> for_statement','statement',1,'p_statement','analizador.py',106),
-  ('statement -> input_statement','statement',1,'p_statement','analizador.py',107),
-  ('statement -> increment_statement','statement',1,'p_statement','analizador.py',108),
-  ('declaration -> INT ID ASSIGN NUMBER SEMICOLON','declaration',5,'p_declaration','analizador.py',112),
-  ('declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON','declaration',5,'p_declaration','analizador.py',113),
-  ('declaration -> STRING ID ASSIGN TEXT SEMICOLON','declaration',5,'p_declaration','analizador.py',114),
-  ('declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON','declaration',5,'p_declaration','analizador.py',115),
-  ('assignment -> ID ASSIGN expression SEMICOLON','assignment',4,'p_assignment','analizador.py',127),
-  ('if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE','if_statement',7,'p_if_statement','analizador.py',143),
-  ('while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE','while_statement',7,'p_while_statement','analizador.py',147),
-  ('for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE','for_statement',14,'p_for_statement','analizador.py',151),
-  ('condition -> expression EQ expression','condition',3,'p_condition','analizador.py',155),
-  ('condition -> expression GT expression','condition',3,'p_condition','analizador.py',156),
-  ('condition -> expression LT expression','condition',3,'p_condition','analizador.py',157),
-  ('condition -> condition AND condition','condition',3,'p_condition','analizador.py',158),
-  ('expression -> NUMBER','expression',1,'p_expression','analizador.py',165),
-  ('expression -> DECIMAL','expression',1,'p_expression','analizador.py',166),
-  ('expression -> ID','expression',1,'p_expression','analizador.py',167),
-  ('input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON','input_statement',5,'p_input_statement','analizador.py',171),
-  ('increment_statement -> ID PLUS SEMICOLON','increment_statement',3,'p_increment_statement','analizador.py',177),
+  ('program -> statements','program',1,'p_program','analizador.py',100),
+  ('statements -> statement','statements',1,'p_statements','analizador.py',104),
+  ('statements -> statement statements','statements',2,'p_statements','analizador.py',105),
+  ('statement -> declaration','statement',1,'p_statement','analizador.py',112),
+  ('statement -> assignment','statement',1,'p_statement','analizador.py',113),
+  ('statement -> if_statement','statement',1,'p_statement','analizador.py',114),
+  ('statement -> while_statement','statement',1,'p_statement','analizador.py',115),
+  ('statement -> for_statement','statement',1,'p_statement','analizador.py',116),
+  ('statement -> input_statement','statement',1,'p_statement','analizador.py',117),
+  ('statement -> increment_statement','statement',1,'p_statement','analizador.py',118),
+  ('statement -> do_statement','statement',1,'p_statement','analizador.py',119),
+  ('declaration -> INT ID ASSIGN expression SEMICOLON','declaration',5,'p_declaration','analizador.py',123),
+  ('declaration -> FLOAT ID ASSIGN expression SEMICOLON','declaration',5,'p_declaration','analizador.py',124),
+  ('declaration -> STRING ID ASSIGN TEXT SEMICOLON','declaration',5,'p_declaration','analizador.py',125),
+  ('assignment -> ID ASSIGN expression SEMICOLON','assignment',4,'p_assignment','analizador.py',137),
+  ('if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE','if_statement',7,'p_if_statement','analizador.py',153),
+  ('while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE','while_statement',6,'p_while_statement','analizador.py',157),
+  ('for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE','for_statement',14,'p_for_statement','analizador.py',161),
+  ('do_statement -> DO statements ENDDO','do_statement',3,'p_do_statement','analizador.py',166),
+  ('condition -> expression EQ expression','condition',3,'p_condition','analizador.py',170),
+  ('condition -> expression GT expression','condition',3,'p_condition','analizador.py',171),
+  ('condition -> expression LT expression','condition',3,'p_condition','analizador.py',172),
+  ('condition -> condition AND condition','condition',3,'p_condition','analizador.py',173),
+  ('expression -> NUMBER','expression',1,'p_expression','analizador.py',180),
+  ('expression -> DECIMAL','expression',1,'p_expression','analizador.py',181),
+  ('expression -> ID','expression',1,'p_expression','analizador.py',182),
+  ('expression -> expression PLUS_OP expression','expression',3,'p_expression','analizador.py',183),
+  ('expression -> expression MINUS_OP expression','expression',3,'p_expression','analizador.py',184),
+  ('expression -> expression MULT_OP expression','expression',3,'p_expression','analizador.py',185),
+  ('expression -> expression DIV_OP expression','expression',3,'p_expression','analizador.py',186),
+  ('input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON','input_statement',5,'p_input_statement','analizador.py',193),
+  ('increment_statement -> ID PLUS SEMICOLON','increment_statement',3,'p_increment_statement','analizador.py',199),
 ]

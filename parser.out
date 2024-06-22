@@ -13,66 +13,79 @@ Rule 7     statement -> while_statement
 Rule 8     statement -> for_statement
 Rule 9     statement -> input_statement
 Rule 10    statement -> increment_statement
-Rule 11    declaration -> INT ID ASSIGN NUMBER SEMICOLON
-Rule 12    declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON
-Rule 13    declaration -> STRING ID ASSIGN TEXT SEMICOLON
-Rule 14    declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON
+Rule 11    statement -> do_statement
+Rule 12    declaration -> INT ID ASSIGN expression SEMICOLON
+Rule 13    declaration -> FLOAT ID ASSIGN expression SEMICOLON
+Rule 14    declaration -> STRING ID ASSIGN TEXT SEMICOLON
 Rule 15    assignment -> ID ASSIGN expression SEMICOLON
 Rule 16    if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE
-Rule 17    while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE
+Rule 17    while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE
 Rule 18    for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
-Rule 19    condition -> expression EQ expression
-Rule 20    condition -> expression GT expression
-Rule 21    condition -> expression LT expression
-Rule 22    condition -> condition AND condition
-Rule 23    expression -> NUMBER
-Rule 24    expression -> DECIMAL
-Rule 25    expression -> ID
-Rule 26    input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON
-Rule 27    increment_statement -> ID PLUS SEMICOLON
+Rule 19    do_statement -> DO statements ENDDO
+Rule 20    condition -> expression EQ expression
+Rule 21    condition -> expression GT expression
+Rule 22    condition -> expression LT expression
+Rule 23    condition -> condition AND condition
+Rule 24    expression -> NUMBER
+Rule 25    expression -> DECIMAL
+Rule 26    expression -> ID
+Rule 27    expression -> expression PLUS_OP expression
+Rule 28    expression -> expression MINUS_OP expression
+Rule 29    expression -> expression MULT_OP expression
+Rule 30    expression -> expression DIV_OP expression
+Rule 31    input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON
+Rule 32    increment_statement -> ID PLUS SEMICOLON
 
 Terminals, with rules where they appear
 
-AND                  : 22
-ASSIGN               : 11 12 13 14 15
+AND                  : 23
+ASSIGN               : 12 13 14 15
 COMMA                : 18
-DECIMAL              : 12 24
-EQ                   : 19
-FLOAT                : 12 14
+DECIMAL              : 25
+DIV_OP               : 30
+DO                   : 19
+ENDDO                : 19
+ENDWHILE             : 17
+EQ                   : 20
+FLOAT                : 13
 FOR                  : 18
-GT                   : 20
-ID                   : 11 12 13 14 15 18 25 27
+GT                   : 21
+ID                   : 12 13 14 15 18 26 32
 IF                   : 16
 IN                   : 18
-INPUT                : 26
-INT                  : 11
-LBRACE               : 16 17 18
-LPAREN               : 16 17 18 18 26
-LT                   : 21
-NUMBER               : 11 14 18 18 23
-PLUS                 : 27
+INPUT                : 31
+INT                  : 12
+LBRACE               : 16 18
+LPAREN               : 16 17 18 18 31
+LT                   : 22
+MINUS_OP             : 28
+MULT_OP              : 29
+NUMBER               : 18 18 24
+PLUS                 : 32
+PLUS_OP              : 27
 RANGE                : 18
-RBRACE               : 16 17 18
-RPAREN               : 16 17 18 18 26
-SEMICOLON            : 11 12 13 14 15 26 27
-STRING               : 13
-TEXT                 : 13 26
+RBRACE               : 16 18
+RPAREN               : 16 17 18 18 31
+SEMICOLON            : 12 13 14 15 31 32
+STRING               : 14
+TEXT                 : 14 31
 WHILE                : 17
 error                : 
 
 Nonterminals, with rules where they appear
 
 assignment           : 5
-condition            : 16 17 22 22
+condition            : 16 17 23 23
 declaration          : 4
-expression           : 15 19 19 20 20 21 21
+do_statement         : 11
+expression           : 12 13 15 20 20 21 21 22 22 27 27 28 28 29 29 30 30
 for_statement        : 8
 if_statement         : 6
 increment_statement  : 10
 input_statement      : 9
 program              : 0
 statement            : 2 3
-statements           : 1 3 16 17 18
+statements           : 1 3 16 17 18 19
 while_statement      : 7
 
 Parsing method: LALR
@@ -90,25 +103,27 @@ state 0
     (8) statement -> . for_statement
     (9) statement -> . input_statement
     (10) statement -> . increment_statement
-    (11) declaration -> . INT ID ASSIGN NUMBER SEMICOLON
-    (12) declaration -> . FLOAT ID ASSIGN DECIMAL SEMICOLON
-    (13) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
-    (14) declaration -> . FLOAT ID ASSIGN NUMBER SEMICOLON
+    (11) statement -> . do_statement
+    (12) declaration -> . INT ID ASSIGN expression SEMICOLON
+    (13) declaration -> . FLOAT ID ASSIGN expression SEMICOLON
+    (14) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
     (15) assignment -> . ID ASSIGN expression SEMICOLON
     (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
-    (17) while_statement -> . WHILE LPAREN condition RPAREN LBRACE statements RBRACE
+    (17) while_statement -> . WHILE LPAREN condition RPAREN statements ENDWHILE
     (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
-    (26) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
-    (27) increment_statement -> . ID PLUS SEMICOLON
+    (31) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
+    (32) increment_statement -> . ID PLUS SEMICOLON
+    (19) do_statement -> . DO statements ENDDO
 
-    INT             shift and go to state 11
-    FLOAT           shift and go to state 13
-    STRING          shift and go to state 14
-    ID              shift and go to state 12
-    IF              shift and go to state 15
-    WHILE           shift and go to state 16
-    FOR             shift and go to state 17
-    INPUT           shift and go to state 18
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 13
+    IF              shift and go to state 16
+    WHILE           shift and go to state 17
+    FOR             shift and go to state 18
+    INPUT           shift and go to state 19
+    DO              shift and go to state 20
 
     program                        shift and go to state 1
     statements                     shift and go to state 2
@@ -120,6 +135,7 @@ state 0
     for_statement                  shift and go to state 8
     input_statement                shift and go to state 9
     increment_statement            shift and go to state 10
+    do_statement                   shift and go to state 11
 
 state 1
 
@@ -147,30 +163,34 @@ state 3
     (8) statement -> . for_statement
     (9) statement -> . input_statement
     (10) statement -> . increment_statement
-    (11) declaration -> . INT ID ASSIGN NUMBER SEMICOLON
-    (12) declaration -> . FLOAT ID ASSIGN DECIMAL SEMICOLON
-    (13) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
-    (14) declaration -> . FLOAT ID ASSIGN NUMBER SEMICOLON
+    (11) statement -> . do_statement
+    (12) declaration -> . INT ID ASSIGN expression SEMICOLON
+    (13) declaration -> . FLOAT ID ASSIGN expression SEMICOLON
+    (14) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
     (15) assignment -> . ID ASSIGN expression SEMICOLON
     (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
-    (17) while_statement -> . WHILE LPAREN condition RPAREN LBRACE statements RBRACE
+    (17) while_statement -> . WHILE LPAREN condition RPAREN statements ENDWHILE
     (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
-    (26) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
-    (27) increment_statement -> . ID PLUS SEMICOLON
+    (31) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
+    (32) increment_statement -> . ID PLUS SEMICOLON
+    (19) do_statement -> . DO statements ENDDO
 
     $end            reduce using rule 2 (statements -> statement .)
+    ENDDO           reduce using rule 2 (statements -> statement .)
+    ENDWHILE        reduce using rule 2 (statements -> statement .)
     RBRACE          reduce using rule 2 (statements -> statement .)
-    INT             shift and go to state 11
-    FLOAT           shift and go to state 13
-    STRING          shift and go to state 14
-    ID              shift and go to state 12
-    IF              shift and go to state 15
-    WHILE           shift and go to state 16
-    FOR             shift and go to state 17
-    INPUT           shift and go to state 18
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 13
+    IF              shift and go to state 16
+    WHILE           shift and go to state 17
+    FOR             shift and go to state 18
+    INPUT           shift and go to state 19
+    DO              shift and go to state 20
 
     statement                      shift and go to state 3
-    statements                     shift and go to state 19
+    statements                     shift and go to state 21
     declaration                    shift and go to state 4
     assignment                     shift and go to state 5
     if_statement                   shift and go to state 6
@@ -178,6 +198,7 @@ state 3
     for_statement                  shift and go to state 8
     input_statement                shift and go to state 9
     increment_statement            shift and go to state 10
+    do_statement                   shift and go to state 11
 
 state 4
 
@@ -191,7 +212,10 @@ state 4
     WHILE           reduce using rule 4 (statement -> declaration .)
     FOR             reduce using rule 4 (statement -> declaration .)
     INPUT           reduce using rule 4 (statement -> declaration .)
+    DO              reduce using rule 4 (statement -> declaration .)
     $end            reduce using rule 4 (statement -> declaration .)
+    ENDDO           reduce using rule 4 (statement -> declaration .)
+    ENDWHILE        reduce using rule 4 (statement -> declaration .)
     RBRACE          reduce using rule 4 (statement -> declaration .)
 
 
@@ -207,7 +231,10 @@ state 5
     WHILE           reduce using rule 5 (statement -> assignment .)
     FOR             reduce using rule 5 (statement -> assignment .)
     INPUT           reduce using rule 5 (statement -> assignment .)
+    DO              reduce using rule 5 (statement -> assignment .)
     $end            reduce using rule 5 (statement -> assignment .)
+    ENDDO           reduce using rule 5 (statement -> assignment .)
+    ENDWHILE        reduce using rule 5 (statement -> assignment .)
     RBRACE          reduce using rule 5 (statement -> assignment .)
 
 
@@ -223,7 +250,10 @@ state 6
     WHILE           reduce using rule 6 (statement -> if_statement .)
     FOR             reduce using rule 6 (statement -> if_statement .)
     INPUT           reduce using rule 6 (statement -> if_statement .)
+    DO              reduce using rule 6 (statement -> if_statement .)
     $end            reduce using rule 6 (statement -> if_statement .)
+    ENDDO           reduce using rule 6 (statement -> if_statement .)
+    ENDWHILE        reduce using rule 6 (statement -> if_statement .)
     RBRACE          reduce using rule 6 (statement -> if_statement .)
 
 
@@ -239,7 +269,10 @@ state 7
     WHILE           reduce using rule 7 (statement -> while_statement .)
     FOR             reduce using rule 7 (statement -> while_statement .)
     INPUT           reduce using rule 7 (statement -> while_statement .)
+    DO              reduce using rule 7 (statement -> while_statement .)
     $end            reduce using rule 7 (statement -> while_statement .)
+    ENDDO           reduce using rule 7 (statement -> while_statement .)
+    ENDWHILE        reduce using rule 7 (statement -> while_statement .)
     RBRACE          reduce using rule 7 (statement -> while_statement .)
 
 
@@ -255,7 +288,10 @@ state 8
     WHILE           reduce using rule 8 (statement -> for_statement .)
     FOR             reduce using rule 8 (statement -> for_statement .)
     INPUT           reduce using rule 8 (statement -> for_statement .)
+    DO              reduce using rule 8 (statement -> for_statement .)
     $end            reduce using rule 8 (statement -> for_statement .)
+    ENDDO           reduce using rule 8 (statement -> for_statement .)
+    ENDWHILE        reduce using rule 8 (statement -> for_statement .)
     RBRACE          reduce using rule 8 (statement -> for_statement .)
 
 
@@ -271,7 +307,10 @@ state 9
     WHILE           reduce using rule 9 (statement -> input_statement .)
     FOR             reduce using rule 9 (statement -> input_statement .)
     INPUT           reduce using rule 9 (statement -> input_statement .)
+    DO              reduce using rule 9 (statement -> input_statement .)
     $end            reduce using rule 9 (statement -> input_statement .)
+    ENDDO           reduce using rule 9 (statement -> input_statement .)
+    ENDWHILE        reduce using rule 9 (statement -> input_statement .)
     RBRACE          reduce using rule 9 (statement -> input_statement .)
 
 
@@ -287,302 +326,464 @@ state 10
     WHILE           reduce using rule 10 (statement -> increment_statement .)
     FOR             reduce using rule 10 (statement -> increment_statement .)
     INPUT           reduce using rule 10 (statement -> increment_statement .)
+    DO              reduce using rule 10 (statement -> increment_statement .)
     $end            reduce using rule 10 (statement -> increment_statement .)
+    ENDDO           reduce using rule 10 (statement -> increment_statement .)
+    ENDWHILE        reduce using rule 10 (statement -> increment_statement .)
     RBRACE          reduce using rule 10 (statement -> increment_statement .)
 
 
 state 11
 
-    (11) declaration -> INT . ID ASSIGN NUMBER SEMICOLON
+    (11) statement -> do_statement .
 
-    ID              shift and go to state 20
+    INT             reduce using rule 11 (statement -> do_statement .)
+    FLOAT           reduce using rule 11 (statement -> do_statement .)
+    STRING          reduce using rule 11 (statement -> do_statement .)
+    ID              reduce using rule 11 (statement -> do_statement .)
+    IF              reduce using rule 11 (statement -> do_statement .)
+    WHILE           reduce using rule 11 (statement -> do_statement .)
+    FOR             reduce using rule 11 (statement -> do_statement .)
+    INPUT           reduce using rule 11 (statement -> do_statement .)
+    DO              reduce using rule 11 (statement -> do_statement .)
+    $end            reduce using rule 11 (statement -> do_statement .)
+    ENDDO           reduce using rule 11 (statement -> do_statement .)
+    ENDWHILE        reduce using rule 11 (statement -> do_statement .)
+    RBRACE          reduce using rule 11 (statement -> do_statement .)
 
 
 state 12
 
-    (15) assignment -> ID . ASSIGN expression SEMICOLON
-    (27) increment_statement -> ID . PLUS SEMICOLON
+    (12) declaration -> INT . ID ASSIGN expression SEMICOLON
 
-    ASSIGN          shift and go to state 21
-    PLUS            shift and go to state 22
+    ID              shift and go to state 22
 
 
 state 13
 
-    (12) declaration -> FLOAT . ID ASSIGN DECIMAL SEMICOLON
-    (14) declaration -> FLOAT . ID ASSIGN NUMBER SEMICOLON
+    (15) assignment -> ID . ASSIGN expression SEMICOLON
+    (32) increment_statement -> ID . PLUS SEMICOLON
 
-    ID              shift and go to state 23
+    ASSIGN          shift and go to state 23
+    PLUS            shift and go to state 24
 
 
 state 14
 
-    (13) declaration -> STRING . ID ASSIGN TEXT SEMICOLON
+    (13) declaration -> FLOAT . ID ASSIGN expression SEMICOLON
 
-    ID              shift and go to state 24
+    ID              shift and go to state 25
 
 
 state 15
 
-    (16) if_statement -> IF . LPAREN condition RPAREN LBRACE statements RBRACE
+    (14) declaration -> STRING . ID ASSIGN TEXT SEMICOLON
 
-    LPAREN          shift and go to state 25
+    ID              shift and go to state 26
 
 
 state 16
 
-    (17) while_statement -> WHILE . LPAREN condition RPAREN LBRACE statements RBRACE
-
-    LPAREN          shift and go to state 26
-
-
-state 17
-
-    (18) for_statement -> FOR . LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+    (16) if_statement -> IF . LPAREN condition RPAREN LBRACE statements RBRACE
 
     LPAREN          shift and go to state 27
 
 
-state 18
+state 17
 
-    (26) input_statement -> INPUT . LPAREN TEXT RPAREN SEMICOLON
+    (17) while_statement -> WHILE . LPAREN condition RPAREN statements ENDWHILE
 
     LPAREN          shift and go to state 28
 
 
+state 18
+
+    (18) for_statement -> FOR . LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+
+    LPAREN          shift and go to state 29
+
+
 state 19
 
-    (3) statements -> statement statements .
+    (31) input_statement -> INPUT . LPAREN TEXT RPAREN SEMICOLON
 
-    $end            reduce using rule 3 (statements -> statement statements .)
-    RBRACE          reduce using rule 3 (statements -> statement statements .)
+    LPAREN          shift and go to state 30
 
 
 state 20
 
-    (11) declaration -> INT ID . ASSIGN NUMBER SEMICOLON
+    (19) do_statement -> DO . statements ENDDO
+    (2) statements -> . statement
+    (3) statements -> . statement statements
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . if_statement
+    (7) statement -> . while_statement
+    (8) statement -> . for_statement
+    (9) statement -> . input_statement
+    (10) statement -> . increment_statement
+    (11) statement -> . do_statement
+    (12) declaration -> . INT ID ASSIGN expression SEMICOLON
+    (13) declaration -> . FLOAT ID ASSIGN expression SEMICOLON
+    (14) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
+    (15) assignment -> . ID ASSIGN expression SEMICOLON
+    (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
+    (17) while_statement -> . WHILE LPAREN condition RPAREN statements ENDWHILE
+    (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+    (31) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
+    (32) increment_statement -> . ID PLUS SEMICOLON
+    (19) do_statement -> . DO statements ENDDO
 
-    ASSIGN          shift and go to state 29
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 13
+    IF              shift and go to state 16
+    WHILE           shift and go to state 17
+    FOR             shift and go to state 18
+    INPUT           shift and go to state 19
+    DO              shift and go to state 20
 
+    statements                     shift and go to state 31
+    statement                      shift and go to state 3
+    declaration                    shift and go to state 4
+    assignment                     shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    input_statement                shift and go to state 9
+    increment_statement            shift and go to state 10
+    do_statement                   shift and go to state 11
 
 state 21
 
-    (15) assignment -> ID ASSIGN . expression SEMICOLON
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
+    (3) statements -> statement statements .
 
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
+    $end            reduce using rule 3 (statements -> statement statements .)
+    ENDDO           reduce using rule 3 (statements -> statement statements .)
+    ENDWHILE        reduce using rule 3 (statements -> statement statements .)
+    RBRACE          reduce using rule 3 (statements -> statement statements .)
 
-    expression                     shift and go to state 31
 
 state 22
 
-    (27) increment_statement -> ID PLUS . SEMICOLON
+    (12) declaration -> INT ID . ASSIGN expression SEMICOLON
 
-    SEMICOLON       shift and go to state 34
+    ASSIGN          shift and go to state 32
 
 
 state 23
 
-    (12) declaration -> FLOAT ID . ASSIGN DECIMAL SEMICOLON
-    (14) declaration -> FLOAT ID . ASSIGN NUMBER SEMICOLON
+    (15) assignment -> ID ASSIGN . expression SEMICOLON
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    ASSIGN          shift and go to state 35
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    expression                     shift and go to state 34
 
 state 24
 
-    (13) declaration -> STRING ID . ASSIGN TEXT SEMICOLON
+    (32) increment_statement -> ID PLUS . SEMICOLON
 
-    ASSIGN          shift and go to state 36
+    SEMICOLON       shift and go to state 37
 
 
 state 25
 
-    (16) if_statement -> IF LPAREN . condition RPAREN LBRACE statements RBRACE
-    (19) condition -> . expression EQ expression
-    (20) condition -> . expression GT expression
-    (21) condition -> . expression LT expression
-    (22) condition -> . condition AND condition
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
+    (13) declaration -> FLOAT ID . ASSIGN expression SEMICOLON
 
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
+    ASSIGN          shift and go to state 38
 
-    condition                      shift and go to state 37
-    expression                     shift and go to state 38
 
 state 26
 
-    (17) while_statement -> WHILE LPAREN . condition RPAREN LBRACE statements RBRACE
-    (19) condition -> . expression EQ expression
-    (20) condition -> . expression GT expression
-    (21) condition -> . expression LT expression
-    (22) condition -> . condition AND condition
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
+    (14) declaration -> STRING ID . ASSIGN TEXT SEMICOLON
 
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
+    ASSIGN          shift and go to state 39
 
-    condition                      shift and go to state 39
-    expression                     shift and go to state 38
 
 state 27
 
-    (18) for_statement -> FOR LPAREN . ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+    (16) if_statement -> IF LPAREN . condition RPAREN LBRACE statements RBRACE
+    (20) condition -> . expression EQ expression
+    (21) condition -> . expression GT expression
+    (22) condition -> . expression LT expression
+    (23) condition -> . condition AND condition
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    ID              shift and go to state 40
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    condition                      shift and go to state 40
+    expression                     shift and go to state 41
 
 state 28
 
-    (26) input_statement -> INPUT LPAREN . TEXT RPAREN SEMICOLON
+    (17) while_statement -> WHILE LPAREN . condition RPAREN statements ENDWHILE
+    (20) condition -> . expression EQ expression
+    (21) condition -> . expression GT expression
+    (22) condition -> . expression LT expression
+    (23) condition -> . condition AND condition
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    TEXT            shift and go to state 41
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    condition                      shift and go to state 42
+    expression                     shift and go to state 41
 
 state 29
 
-    (11) declaration -> INT ID ASSIGN . NUMBER SEMICOLON
+    (18) for_statement -> FOR LPAREN . ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
 
-    NUMBER          shift and go to state 42
+    ID              shift and go to state 43
 
 
 state 30
 
-    (25) expression -> ID .
+    (31) input_statement -> INPUT LPAREN . TEXT RPAREN SEMICOLON
 
-    SEMICOLON       reduce using rule 25 (expression -> ID .)
-    EQ              reduce using rule 25 (expression -> ID .)
-    GT              reduce using rule 25 (expression -> ID .)
-    LT              reduce using rule 25 (expression -> ID .)
-    RPAREN          reduce using rule 25 (expression -> ID .)
-    AND             reduce using rule 25 (expression -> ID .)
+    TEXT            shift and go to state 44
 
 
 state 31
 
-    (15) assignment -> ID ASSIGN expression . SEMICOLON
+    (19) do_statement -> DO statements . ENDDO
 
-    SEMICOLON       shift and go to state 43
+    ENDDO           shift and go to state 45
 
 
 state 32
 
-    (23) expression -> NUMBER .
+    (12) declaration -> INT ID ASSIGN . expression SEMICOLON
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    SEMICOLON       reduce using rule 23 (expression -> NUMBER .)
-    EQ              reduce using rule 23 (expression -> NUMBER .)
-    GT              reduce using rule 23 (expression -> NUMBER .)
-    LT              reduce using rule 23 (expression -> NUMBER .)
-    RPAREN          reduce using rule 23 (expression -> NUMBER .)
-    AND             reduce using rule 23 (expression -> NUMBER .)
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    expression                     shift and go to state 46
 
 state 33
 
-    (24) expression -> DECIMAL .
+    (26) expression -> ID .
 
-    SEMICOLON       reduce using rule 24 (expression -> DECIMAL .)
-    EQ              reduce using rule 24 (expression -> DECIMAL .)
-    GT              reduce using rule 24 (expression -> DECIMAL .)
-    LT              reduce using rule 24 (expression -> DECIMAL .)
-    RPAREN          reduce using rule 24 (expression -> DECIMAL .)
-    AND             reduce using rule 24 (expression -> DECIMAL .)
+    SEMICOLON       reduce using rule 26 (expression -> ID .)
+    PLUS_OP         reduce using rule 26 (expression -> ID .)
+    MINUS_OP        reduce using rule 26 (expression -> ID .)
+    MULT_OP         reduce using rule 26 (expression -> ID .)
+    DIV_OP          reduce using rule 26 (expression -> ID .)
+    EQ              reduce using rule 26 (expression -> ID .)
+    GT              reduce using rule 26 (expression -> ID .)
+    LT              reduce using rule 26 (expression -> ID .)
+    RPAREN          reduce using rule 26 (expression -> ID .)
+    AND             reduce using rule 26 (expression -> ID .)
 
 
 state 34
 
-    (27) increment_statement -> ID PLUS SEMICOLON .
+    (15) assignment -> ID ASSIGN expression . SEMICOLON
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
 
-    INT             reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    FLOAT           reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    STRING          reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    ID              reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    IF              reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    WHILE           reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    FOR             reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    INPUT           reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    $end            reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
-    RBRACE          reduce using rule 27 (increment_statement -> ID PLUS SEMICOLON .)
+    SEMICOLON       shift and go to state 47
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
 
 
 state 35
 
-    (12) declaration -> FLOAT ID ASSIGN . DECIMAL SEMICOLON
-    (14) declaration -> FLOAT ID ASSIGN . NUMBER SEMICOLON
+    (24) expression -> NUMBER .
 
-    DECIMAL         shift and go to state 44
-    NUMBER          shift and go to state 45
+    SEMICOLON       reduce using rule 24 (expression -> NUMBER .)
+    PLUS_OP         reduce using rule 24 (expression -> NUMBER .)
+    MINUS_OP        reduce using rule 24 (expression -> NUMBER .)
+    MULT_OP         reduce using rule 24 (expression -> NUMBER .)
+    DIV_OP          reduce using rule 24 (expression -> NUMBER .)
+    EQ              reduce using rule 24 (expression -> NUMBER .)
+    GT              reduce using rule 24 (expression -> NUMBER .)
+    LT              reduce using rule 24 (expression -> NUMBER .)
+    RPAREN          reduce using rule 24 (expression -> NUMBER .)
+    AND             reduce using rule 24 (expression -> NUMBER .)
 
 
 state 36
 
-    (13) declaration -> STRING ID ASSIGN . TEXT SEMICOLON
+    (25) expression -> DECIMAL .
 
-    TEXT            shift and go to state 46
+    SEMICOLON       reduce using rule 25 (expression -> DECIMAL .)
+    PLUS_OP         reduce using rule 25 (expression -> DECIMAL .)
+    MINUS_OP        reduce using rule 25 (expression -> DECIMAL .)
+    MULT_OP         reduce using rule 25 (expression -> DECIMAL .)
+    DIV_OP          reduce using rule 25 (expression -> DECIMAL .)
+    EQ              reduce using rule 25 (expression -> DECIMAL .)
+    GT              reduce using rule 25 (expression -> DECIMAL .)
+    LT              reduce using rule 25 (expression -> DECIMAL .)
+    RPAREN          reduce using rule 25 (expression -> DECIMAL .)
+    AND             reduce using rule 25 (expression -> DECIMAL .)
 
 
 state 37
 
-    (16) if_statement -> IF LPAREN condition . RPAREN LBRACE statements RBRACE
-    (22) condition -> condition . AND condition
+    (32) increment_statement -> ID PLUS SEMICOLON .
 
-    RPAREN          shift and go to state 47
-    AND             shift and go to state 48
+    INT             reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    FLOAT           reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    STRING          reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    ID              reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    IF              reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    WHILE           reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    FOR             reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    INPUT           reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    DO              reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    $end            reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    ENDDO           reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    ENDWHILE        reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
+    RBRACE          reduce using rule 32 (increment_statement -> ID PLUS SEMICOLON .)
 
 
 state 38
 
-    (19) condition -> expression . EQ expression
-    (20) condition -> expression . GT expression
-    (21) condition -> expression . LT expression
+    (13) declaration -> FLOAT ID ASSIGN . expression SEMICOLON
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    EQ              shift and go to state 49
-    GT              shift and go to state 50
-    LT              shift and go to state 51
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    expression                     shift and go to state 52
 
 state 39
 
-    (17) while_statement -> WHILE LPAREN condition . RPAREN LBRACE statements RBRACE
-    (22) condition -> condition . AND condition
+    (14) declaration -> STRING ID ASSIGN . TEXT SEMICOLON
 
-    RPAREN          shift and go to state 52
-    AND             shift and go to state 48
+    TEXT            shift and go to state 53
 
 
 state 40
 
-    (18) for_statement -> FOR LPAREN ID . IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+    (16) if_statement -> IF LPAREN condition . RPAREN LBRACE statements RBRACE
+    (23) condition -> condition . AND condition
 
-    IN              shift and go to state 53
+    RPAREN          shift and go to state 54
+    AND             shift and go to state 55
 
 
 state 41
 
-    (26) input_statement -> INPUT LPAREN TEXT . RPAREN SEMICOLON
+    (20) condition -> expression . EQ expression
+    (21) condition -> expression . GT expression
+    (22) condition -> expression . LT expression
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
 
-    RPAREN          shift and go to state 54
+    EQ              shift and go to state 56
+    GT              shift and go to state 57
+    LT              shift and go to state 58
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
 
 
 state 42
 
-    (11) declaration -> INT ID ASSIGN NUMBER . SEMICOLON
+    (17) while_statement -> WHILE LPAREN condition . RPAREN statements ENDWHILE
+    (23) condition -> condition . AND condition
 
-    SEMICOLON       shift and go to state 55
+    RPAREN          shift and go to state 59
+    AND             shift and go to state 55
 
 
 state 43
+
+    (18) for_statement -> FOR LPAREN ID . IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+
+    IN              shift and go to state 60
+
+
+state 44
+
+    (31) input_statement -> INPUT LPAREN TEXT . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 61
+
+
+state 45
+
+    (19) do_statement -> DO statements ENDDO .
+
+    INT             reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    FLOAT           reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    STRING          reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    ID              reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    IF              reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    WHILE           reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    FOR             reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    INPUT           reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    DO              reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    $end            reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    ENDDO           reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    ENDWHILE        reduce using rule 19 (do_statement -> DO statements ENDDO .)
+    RBRACE          reduce using rule 19 (do_statement -> DO statements ENDDO .)
+
+
+state 46
+
+    (12) declaration -> INT ID ASSIGN expression . SEMICOLON
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
+
+    SEMICOLON       shift and go to state 62
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
+
+
+state 47
 
     (15) assignment -> ID ASSIGN expression SEMICOLON .
 
@@ -594,181 +795,400 @@ state 43
     WHILE           reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
     FOR             reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
     INPUT           reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
+    DO              reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
     $end            reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
+    ENDDO           reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
+    ENDWHILE        reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
     RBRACE          reduce using rule 15 (assignment -> ID ASSIGN expression SEMICOLON .)
-
-
-state 44
-
-    (12) declaration -> FLOAT ID ASSIGN DECIMAL . SEMICOLON
-
-    SEMICOLON       shift and go to state 56
-
-
-state 45
-
-    (14) declaration -> FLOAT ID ASSIGN NUMBER . SEMICOLON
-
-    SEMICOLON       shift and go to state 57
-
-
-state 46
-
-    (13) declaration -> STRING ID ASSIGN TEXT . SEMICOLON
-
-    SEMICOLON       shift and go to state 58
-
-
-state 47
-
-    (16) if_statement -> IF LPAREN condition RPAREN . LBRACE statements RBRACE
-
-    LBRACE          shift and go to state 59
 
 
 state 48
 
-    (22) condition -> condition AND . condition
-    (19) condition -> . expression EQ expression
-    (20) condition -> . expression GT expression
-    (21) condition -> . expression LT expression
-    (22) condition -> . condition AND condition
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
+    (27) expression -> expression PLUS_OP . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
-
-    condition                      shift and go to state 60
-    expression                     shift and go to state 38
-
-state 49
-
-    (19) condition -> expression EQ . expression
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
-
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
-
-    expression                     shift and go to state 61
-
-state 50
-
-    (20) condition -> expression GT . expression
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
-
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
-
-    expression                     shift and go to state 62
-
-state 51
-
-    (21) condition -> expression LT . expression
-    (23) expression -> . NUMBER
-    (24) expression -> . DECIMAL
-    (25) expression -> . ID
-
-    NUMBER          shift and go to state 32
-    DECIMAL         shift and go to state 33
-    ID              shift and go to state 30
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
     expression                     shift and go to state 63
 
+state 49
+
+    (28) expression -> expression MINUS_OP . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
+
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
+
+    expression                     shift and go to state 64
+
+state 50
+
+    (29) expression -> expression MULT_OP . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
+
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
+
+    expression                     shift and go to state 65
+
+state 51
+
+    (30) expression -> expression DIV_OP . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
+
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
+
+    expression                     shift and go to state 66
+
 state 52
 
-    (17) while_statement -> WHILE LPAREN condition RPAREN . LBRACE statements RBRACE
+    (13) declaration -> FLOAT ID ASSIGN expression . SEMICOLON
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
 
-    LBRACE          shift and go to state 64
+    SEMICOLON       shift and go to state 67
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
 
 
 state 53
 
-    (18) for_statement -> FOR LPAREN ID IN . RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+    (14) declaration -> STRING ID ASSIGN TEXT . SEMICOLON
 
-    RANGE           shift and go to state 65
+    SEMICOLON       shift and go to state 68
 
 
 state 54
 
-    (26) input_statement -> INPUT LPAREN TEXT RPAREN . SEMICOLON
+    (16) if_statement -> IF LPAREN condition RPAREN . LBRACE statements RBRACE
 
-    SEMICOLON       shift and go to state 66
+    LBRACE          shift and go to state 69
 
 
 state 55
 
-    (11) declaration -> INT ID ASSIGN NUMBER SEMICOLON .
+    (23) condition -> condition AND . condition
+    (20) condition -> . expression EQ expression
+    (21) condition -> . expression GT expression
+    (22) condition -> . expression LT expression
+    (23) condition -> . condition AND condition
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    INT             reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    FLOAT           reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    STRING          reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    ID              reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    IF              reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    WHILE           reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    FOR             reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    INPUT           reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    $end            reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
-    RBRACE          reduce using rule 11 (declaration -> INT ID ASSIGN NUMBER SEMICOLON .)
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    condition                      shift and go to state 70
+    expression                     shift and go to state 41
 
 state 56
 
-    (12) declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .
+    (20) condition -> expression EQ . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    INT             reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    FLOAT           reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    STRING          reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    ID              reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    IF              reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    WHILE           reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    FOR             reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    INPUT           reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    $end            reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
-    RBRACE          reduce using rule 12 (declaration -> FLOAT ID ASSIGN DECIMAL SEMICOLON .)
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    expression                     shift and go to state 71
 
 state 57
 
-    (14) declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .
+    (21) condition -> expression GT . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    INT             reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    FLOAT           reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    STRING          reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    ID              reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    IF              reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    WHILE           reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    FOR             reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    INPUT           reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    $end            reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
-    RBRACE          reduce using rule 14 (declaration -> FLOAT ID ASSIGN NUMBER SEMICOLON .)
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    expression                     shift and go to state 72
 
 state 58
 
-    (13) declaration -> STRING ID ASSIGN TEXT SEMICOLON .
+    (22) condition -> expression LT . expression
+    (24) expression -> . NUMBER
+    (25) expression -> . DECIMAL
+    (26) expression -> . ID
+    (27) expression -> . expression PLUS_OP expression
+    (28) expression -> . expression MINUS_OP expression
+    (29) expression -> . expression MULT_OP expression
+    (30) expression -> . expression DIV_OP expression
 
-    INT             reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    FLOAT           reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    STRING          reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    ID              reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    IF              reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    WHILE           reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    FOR             reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    INPUT           reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    $end            reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
-    RBRACE          reduce using rule 13 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    NUMBER          shift and go to state 35
+    DECIMAL         shift and go to state 36
+    ID              shift and go to state 33
 
+    expression                     shift and go to state 73
 
 state 59
+
+    (17) while_statement -> WHILE LPAREN condition RPAREN . statements ENDWHILE
+    (2) statements -> . statement
+    (3) statements -> . statement statements
+    (4) statement -> . declaration
+    (5) statement -> . assignment
+    (6) statement -> . if_statement
+    (7) statement -> . while_statement
+    (8) statement -> . for_statement
+    (9) statement -> . input_statement
+    (10) statement -> . increment_statement
+    (11) statement -> . do_statement
+    (12) declaration -> . INT ID ASSIGN expression SEMICOLON
+    (13) declaration -> . FLOAT ID ASSIGN expression SEMICOLON
+    (14) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
+    (15) assignment -> . ID ASSIGN expression SEMICOLON
+    (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
+    (17) while_statement -> . WHILE LPAREN condition RPAREN statements ENDWHILE
+    (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+    (31) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
+    (32) increment_statement -> . ID PLUS SEMICOLON
+    (19) do_statement -> . DO statements ENDDO
+
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 13
+    IF              shift and go to state 16
+    WHILE           shift and go to state 17
+    FOR             shift and go to state 18
+    INPUT           shift and go to state 19
+    DO              shift and go to state 20
+
+    statements                     shift and go to state 74
+    statement                      shift and go to state 3
+    declaration                    shift and go to state 4
+    assignment                     shift and go to state 5
+    if_statement                   shift and go to state 6
+    while_statement                shift and go to state 7
+    for_statement                  shift and go to state 8
+    input_statement                shift and go to state 9
+    increment_statement            shift and go to state 10
+    do_statement                   shift and go to state 11
+
+state 60
+
+    (18) for_statement -> FOR LPAREN ID IN . RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
+
+    RANGE           shift and go to state 75
+
+
+state 61
+
+    (31) input_statement -> INPUT LPAREN TEXT RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 76
+
+
+state 62
+
+    (12) declaration -> INT ID ASSIGN expression SEMICOLON .
+
+    INT             reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    FLOAT           reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    STRING          reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    ID              reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    IF              reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    WHILE           reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    FOR             reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    INPUT           reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    DO              reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    $end            reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    ENDDO           reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    ENDWHILE        reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+    RBRACE          reduce using rule 12 (declaration -> INT ID ASSIGN expression SEMICOLON .)
+
+
+state 63
+
+    (27) expression -> expression PLUS_OP expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
+
+    SEMICOLON       reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    PLUS_OP         reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    MINUS_OP        reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    EQ              reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    GT              reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    LT              reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    RPAREN          reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    AND             reduce using rule 27 (expression -> expression PLUS_OP expression .)
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
+
+  ! MULT_OP         [ reduce using rule 27 (expression -> expression PLUS_OP expression .) ]
+  ! DIV_OP          [ reduce using rule 27 (expression -> expression PLUS_OP expression .) ]
+  ! PLUS_OP         [ shift and go to state 48 ]
+  ! MINUS_OP        [ shift and go to state 49 ]
+
+
+state 64
+
+    (28) expression -> expression MINUS_OP expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
+
+    SEMICOLON       reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    PLUS_OP         reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    MINUS_OP        reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    EQ              reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    GT              reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    LT              reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    RPAREN          reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    AND             reduce using rule 28 (expression -> expression MINUS_OP expression .)
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
+
+  ! MULT_OP         [ reduce using rule 28 (expression -> expression MINUS_OP expression .) ]
+  ! DIV_OP          [ reduce using rule 28 (expression -> expression MINUS_OP expression .) ]
+  ! PLUS_OP         [ shift and go to state 48 ]
+  ! MINUS_OP        [ shift and go to state 49 ]
+
+
+state 65
+
+    (29) expression -> expression MULT_OP expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
+
+    SEMICOLON       reduce using rule 29 (expression -> expression MULT_OP expression .)
+    PLUS_OP         reduce using rule 29 (expression -> expression MULT_OP expression .)
+    MINUS_OP        reduce using rule 29 (expression -> expression MULT_OP expression .)
+    MULT_OP         reduce using rule 29 (expression -> expression MULT_OP expression .)
+    DIV_OP          reduce using rule 29 (expression -> expression MULT_OP expression .)
+    EQ              reduce using rule 29 (expression -> expression MULT_OP expression .)
+    GT              reduce using rule 29 (expression -> expression MULT_OP expression .)
+    LT              reduce using rule 29 (expression -> expression MULT_OP expression .)
+    RPAREN          reduce using rule 29 (expression -> expression MULT_OP expression .)
+    AND             reduce using rule 29 (expression -> expression MULT_OP expression .)
+
+  ! PLUS_OP         [ shift and go to state 48 ]
+  ! MINUS_OP        [ shift and go to state 49 ]
+  ! MULT_OP         [ shift and go to state 50 ]
+  ! DIV_OP          [ shift and go to state 51 ]
+
+
+state 66
+
+    (30) expression -> expression DIV_OP expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
+
+    SEMICOLON       reduce using rule 30 (expression -> expression DIV_OP expression .)
+    PLUS_OP         reduce using rule 30 (expression -> expression DIV_OP expression .)
+    MINUS_OP        reduce using rule 30 (expression -> expression DIV_OP expression .)
+    MULT_OP         reduce using rule 30 (expression -> expression DIV_OP expression .)
+    DIV_OP          reduce using rule 30 (expression -> expression DIV_OP expression .)
+    EQ              reduce using rule 30 (expression -> expression DIV_OP expression .)
+    GT              reduce using rule 30 (expression -> expression DIV_OP expression .)
+    LT              reduce using rule 30 (expression -> expression DIV_OP expression .)
+    RPAREN          reduce using rule 30 (expression -> expression DIV_OP expression .)
+    AND             reduce using rule 30 (expression -> expression DIV_OP expression .)
+
+  ! PLUS_OP         [ shift and go to state 48 ]
+  ! MINUS_OP        [ shift and go to state 49 ]
+  ! MULT_OP         [ shift and go to state 50 ]
+  ! DIV_OP          [ shift and go to state 51 ]
+
+
+state 67
+
+    (13) declaration -> FLOAT ID ASSIGN expression SEMICOLON .
+
+    INT             reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    FLOAT           reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    STRING          reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    ID              reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    IF              reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    WHILE           reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    FOR             reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    INPUT           reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    DO              reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    $end            reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    ENDDO           reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    ENDWHILE        reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+    RBRACE          reduce using rule 13 (declaration -> FLOAT ID ASSIGN expression SEMICOLON .)
+
+
+state 68
+
+    (14) declaration -> STRING ID ASSIGN TEXT SEMICOLON .
+
+    INT             reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    FLOAT           reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    STRING          reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    ID              reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    IF              reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    WHILE           reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    FOR             reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    INPUT           reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    DO              reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    $end            reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    ENDDO           reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    ENDWHILE        reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+    RBRACE          reduce using rule 14 (declaration -> STRING ID ASSIGN TEXT SEMICOLON .)
+
+
+state 69
 
     (16) if_statement -> IF LPAREN condition RPAREN LBRACE . statements RBRACE
     (2) statements -> . statement
@@ -780,27 +1200,29 @@ state 59
     (8) statement -> . for_statement
     (9) statement -> . input_statement
     (10) statement -> . increment_statement
-    (11) declaration -> . INT ID ASSIGN NUMBER SEMICOLON
-    (12) declaration -> . FLOAT ID ASSIGN DECIMAL SEMICOLON
-    (13) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
-    (14) declaration -> . FLOAT ID ASSIGN NUMBER SEMICOLON
+    (11) statement -> . do_statement
+    (12) declaration -> . INT ID ASSIGN expression SEMICOLON
+    (13) declaration -> . FLOAT ID ASSIGN expression SEMICOLON
+    (14) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
     (15) assignment -> . ID ASSIGN expression SEMICOLON
     (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
-    (17) while_statement -> . WHILE LPAREN condition RPAREN LBRACE statements RBRACE
+    (17) while_statement -> . WHILE LPAREN condition RPAREN statements ENDWHILE
     (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
-    (26) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
-    (27) increment_statement -> . ID PLUS SEMICOLON
+    (31) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
+    (32) increment_statement -> . ID PLUS SEMICOLON
+    (19) do_statement -> . DO statements ENDDO
 
-    INT             shift and go to state 11
-    FLOAT           shift and go to state 13
-    STRING          shift and go to state 14
-    ID              shift and go to state 12
-    IF              shift and go to state 15
-    WHILE           shift and go to state 16
-    FOR             shift and go to state 17
-    INPUT           shift and go to state 18
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 13
+    IF              shift and go to state 16
+    WHILE           shift and go to state 17
+    FOR             shift and go to state 18
+    INPUT           shift and go to state 19
+    DO              shift and go to state 20
 
-    statements                     shift and go to state 67
+    statements                     shift and go to state 77
     statement                      shift and go to state 3
     declaration                    shift and go to state 4
     assignment                     shift and go to state 5
@@ -809,130 +1231,135 @@ state 59
     for_statement                  shift and go to state 8
     input_statement                shift and go to state 9
     increment_statement            shift and go to state 10
+    do_statement                   shift and go to state 11
 
-state 60
+state 70
 
-    (22) condition -> condition AND condition .
-    (22) condition -> condition . AND condition
+    (23) condition -> condition AND condition .
+    (23) condition -> condition . AND condition
 
   ! shift/reduce conflict for AND resolved as shift
-    RPAREN          reduce using rule 22 (condition -> condition AND condition .)
-    AND             shift and go to state 48
+    RPAREN          reduce using rule 23 (condition -> condition AND condition .)
+    AND             shift and go to state 55
 
-  ! AND             [ reduce using rule 22 (condition -> condition AND condition .) ]
-
-
-state 61
-
-    (19) condition -> expression EQ expression .
-
-    RPAREN          reduce using rule 19 (condition -> expression EQ expression .)
-    AND             reduce using rule 19 (condition -> expression EQ expression .)
+  ! AND             [ reduce using rule 23 (condition -> condition AND condition .) ]
 
 
-state 62
+state 71
 
-    (20) condition -> expression GT expression .
+    (20) condition -> expression EQ expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
 
-    RPAREN          reduce using rule 20 (condition -> expression GT expression .)
-    AND             reduce using rule 20 (condition -> expression GT expression .)
+    RPAREN          reduce using rule 20 (condition -> expression EQ expression .)
+    AND             reduce using rule 20 (condition -> expression EQ expression .)
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
 
 
-state 63
+state 72
 
-    (21) condition -> expression LT expression .
+    (21) condition -> expression GT expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
 
-    RPAREN          reduce using rule 21 (condition -> expression LT expression .)
-    AND             reduce using rule 21 (condition -> expression LT expression .)
+    RPAREN          reduce using rule 21 (condition -> expression GT expression .)
+    AND             reduce using rule 21 (condition -> expression GT expression .)
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
 
 
-state 64
+state 73
 
-    (17) while_statement -> WHILE LPAREN condition RPAREN LBRACE . statements RBRACE
-    (2) statements -> . statement
-    (3) statements -> . statement statements
-    (4) statement -> . declaration
-    (5) statement -> . assignment
-    (6) statement -> . if_statement
-    (7) statement -> . while_statement
-    (8) statement -> . for_statement
-    (9) statement -> . input_statement
-    (10) statement -> . increment_statement
-    (11) declaration -> . INT ID ASSIGN NUMBER SEMICOLON
-    (12) declaration -> . FLOAT ID ASSIGN DECIMAL SEMICOLON
-    (13) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
-    (14) declaration -> . FLOAT ID ASSIGN NUMBER SEMICOLON
-    (15) assignment -> . ID ASSIGN expression SEMICOLON
-    (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
-    (17) while_statement -> . WHILE LPAREN condition RPAREN LBRACE statements RBRACE
-    (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
-    (26) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
-    (27) increment_statement -> . ID PLUS SEMICOLON
+    (22) condition -> expression LT expression .
+    (27) expression -> expression . PLUS_OP expression
+    (28) expression -> expression . MINUS_OP expression
+    (29) expression -> expression . MULT_OP expression
+    (30) expression -> expression . DIV_OP expression
 
-    INT             shift and go to state 11
-    FLOAT           shift and go to state 13
-    STRING          shift and go to state 14
-    ID              shift and go to state 12
-    IF              shift and go to state 15
-    WHILE           shift and go to state 16
-    FOR             shift and go to state 17
-    INPUT           shift and go to state 18
+    RPAREN          reduce using rule 22 (condition -> expression LT expression .)
+    AND             reduce using rule 22 (condition -> expression LT expression .)
+    PLUS_OP         shift and go to state 48
+    MINUS_OP        shift and go to state 49
+    MULT_OP         shift and go to state 50
+    DIV_OP          shift and go to state 51
 
-    statements                     shift and go to state 68
-    statement                      shift and go to state 3
-    declaration                    shift and go to state 4
-    assignment                     shift and go to state 5
-    if_statement                   shift and go to state 6
-    while_statement                shift and go to state 7
-    for_statement                  shift and go to state 8
-    input_statement                shift and go to state 9
-    increment_statement            shift and go to state 10
 
-state 65
+state 74
+
+    (17) while_statement -> WHILE LPAREN condition RPAREN statements . ENDWHILE
+
+    ENDWHILE        shift and go to state 78
+
+
+state 75
 
     (18) for_statement -> FOR LPAREN ID IN RANGE . LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
 
-    LPAREN          shift and go to state 69
+    LPAREN          shift and go to state 79
 
 
-state 66
+state 76
 
-    (26) input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .
+    (31) input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .
 
-    INT             reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    FLOAT           reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    STRING          reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    ID              reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    IF              reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    WHILE           reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    FOR             reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    INPUT           reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    $end            reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
-    RBRACE          reduce using rule 26 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    INT             reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    STRING          reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    ID              reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    IF              reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    WHILE           reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    FOR             reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    INPUT           reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    DO              reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    $end            reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    ENDDO           reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    ENDWHILE        reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
+    RBRACE          reduce using rule 31 (input_statement -> INPUT LPAREN TEXT RPAREN SEMICOLON .)
 
 
-state 67
+state 77
 
     (16) if_statement -> IF LPAREN condition RPAREN LBRACE statements . RBRACE
 
-    RBRACE          shift and go to state 70
+    RBRACE          shift and go to state 80
 
 
-state 68
+state 78
 
-    (17) while_statement -> WHILE LPAREN condition RPAREN LBRACE statements . RBRACE
+    (17) while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .
 
-    RBRACE          shift and go to state 71
+    INT             reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    FLOAT           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    STRING          reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    ID              reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    IF              reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    WHILE           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    FOR             reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    INPUT           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    DO              reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    $end            reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    ENDDO           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    ENDWHILE        reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
+    RBRACE          reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN statements ENDWHILE .)
 
 
-state 69
+state 79
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN . NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
 
-    NUMBER          shift and go to state 72
+    NUMBER          shift and go to state 81
 
 
-state 70
+state 80
 
     (16) if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .
 
@@ -944,62 +1371,49 @@ state 70
     WHILE           reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
     FOR             reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
     INPUT           reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
+    DO              reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
     $end            reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
+    ENDDO           reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
+    ENDWHILE        reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
     RBRACE          reduce using rule 16 (if_statement -> IF LPAREN condition RPAREN LBRACE statements RBRACE .)
 
 
-state 71
-
-    (17) while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .
-
-    INT             reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    FLOAT           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    STRING          reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    ID              reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    IF              reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    WHILE           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    FOR             reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    INPUT           reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    $end            reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-    RBRACE          reduce using rule 17 (while_statement -> WHILE LPAREN condition RPAREN LBRACE statements RBRACE .)
-
-
-state 72
+state 81
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER . COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
 
-    COMMA           shift and go to state 73
+    COMMA           shift and go to state 82
 
 
-state 73
+state 82
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA . NUMBER RPAREN RPAREN LBRACE statements RBRACE
 
-    NUMBER          shift and go to state 74
+    NUMBER          shift and go to state 83
 
 
-state 74
+state 83
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER . RPAREN RPAREN LBRACE statements RBRACE
 
-    RPAREN          shift and go to state 75
+    RPAREN          shift and go to state 84
 
 
-state 75
+state 84
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN . RPAREN LBRACE statements RBRACE
 
-    RPAREN          shift and go to state 76
+    RPAREN          shift and go to state 85
 
 
-state 76
+state 85
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN . LBRACE statements RBRACE
 
-    LBRACE          shift and go to state 77
+    LBRACE          shift and go to state 86
 
 
-state 77
+state 86
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE . statements RBRACE
     (2) statements -> . statement
@@ -1011,27 +1425,29 @@ state 77
     (8) statement -> . for_statement
     (9) statement -> . input_statement
     (10) statement -> . increment_statement
-    (11) declaration -> . INT ID ASSIGN NUMBER SEMICOLON
-    (12) declaration -> . FLOAT ID ASSIGN DECIMAL SEMICOLON
-    (13) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
-    (14) declaration -> . FLOAT ID ASSIGN NUMBER SEMICOLON
+    (11) statement -> . do_statement
+    (12) declaration -> . INT ID ASSIGN expression SEMICOLON
+    (13) declaration -> . FLOAT ID ASSIGN expression SEMICOLON
+    (14) declaration -> . STRING ID ASSIGN TEXT SEMICOLON
     (15) assignment -> . ID ASSIGN expression SEMICOLON
     (16) if_statement -> . IF LPAREN condition RPAREN LBRACE statements RBRACE
-    (17) while_statement -> . WHILE LPAREN condition RPAREN LBRACE statements RBRACE
+    (17) while_statement -> . WHILE LPAREN condition RPAREN statements ENDWHILE
     (18) for_statement -> . FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE
-    (26) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
-    (27) increment_statement -> . ID PLUS SEMICOLON
+    (31) input_statement -> . INPUT LPAREN TEXT RPAREN SEMICOLON
+    (32) increment_statement -> . ID PLUS SEMICOLON
+    (19) do_statement -> . DO statements ENDDO
 
-    INT             shift and go to state 11
-    FLOAT           shift and go to state 13
-    STRING          shift and go to state 14
-    ID              shift and go to state 12
-    IF              shift and go to state 15
-    WHILE           shift and go to state 16
-    FOR             shift and go to state 17
-    INPUT           shift and go to state 18
+    INT             shift and go to state 12
+    FLOAT           shift and go to state 14
+    STRING          shift and go to state 15
+    ID              shift and go to state 13
+    IF              shift and go to state 16
+    WHILE           shift and go to state 17
+    FOR             shift and go to state 18
+    INPUT           shift and go to state 19
+    DO              shift and go to state 20
 
-    statements                     shift and go to state 78
+    statements                     shift and go to state 87
     statement                      shift and go to state 3
     declaration                    shift and go to state 4
     assignment                     shift and go to state 5
@@ -1040,15 +1456,16 @@ state 77
     for_statement                  shift and go to state 8
     input_statement                shift and go to state 9
     increment_statement            shift and go to state 10
+    do_statement                   shift and go to state 11
 
-state 78
+state 87
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements . RBRACE
 
-    RBRACE          shift and go to state 79
+    RBRACE          shift and go to state 88
 
 
-state 79
+state 88
 
     (18) for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .
 
@@ -1060,10 +1477,13 @@ state 79
     WHILE           reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
     FOR             reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
     INPUT           reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
+    DO              reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
     $end            reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
+    ENDDO           reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
+    ENDWHILE        reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
     RBRACE          reduce using rule 18 (for_statement -> FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for AND in state 60 resolved as shift
+WARNING: shift/reduce conflict for AND in state 70 resolved as shift

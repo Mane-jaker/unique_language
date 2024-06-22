@@ -12,9 +12,9 @@ class MyParser:
 
     # Definición de tokens
     tokens = (
-        'INT', 'FLOAT', 'STRING', 'IF', 'WHILE', 'FOR', 'IN', 'RANGE', 'INPUT',
+        'INT', 'FLOAT', 'STRING', 'IF', 'WHILE', 'FOR', 'IN', 'RANGE', 'INPUT', 'DO', 'ENDDO', 'ENDWHILE',
         'ID', 'NUMBER', 'DECIMAL', 'TEXT',
-        'ASSIGN', 'EQ', 'GT', 'LT', 'PLUS', 'AND',
+        'ASSIGN', 'EQ', 'GT', 'LT', 'PLUS', 'AND', 'PLUS_OP', 'MINUS_OP', 'MULT_OP', 'DIV_OP',
         'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON', 'COMMA'
     )
 
@@ -24,6 +24,10 @@ class MyParser:
     t_GT = r'>'
     t_LT = r'<'
     t_PLUS = r'\+\+'
+    t_PLUS_OP = r'\+'
+    t_MINUS_OP = r'-'
+    t_MULT_OP = r'\*'
+    t_DIV_OP = r'/'
     t_LPAREN = r'\('
     t_RPAREN = r'\)'
     t_LBRACE = r'\{'
@@ -42,7 +46,10 @@ class MyParser:
         'IN': 'IN',
         'RANGE': 'RANGE',
         'INPUT': 'INPUT',
-        'AND': 'AND'
+        'AND': 'AND',
+        'DO': 'DO',
+        'ENDDO': 'ENDDO',
+        'ENDWHILE': 'ENDWHILE'
     }
 
     # Definiciones de tokens complejos
@@ -83,7 +90,10 @@ class MyParser:
         return lex.lex(module=self)
 
     # Definición de la precedencia y asociaciones
-    precedence = ()
+    precedence = (
+        ('left', 'PLUS_OP', 'MINUS_OP'),
+        ('left', 'MULT_OP', 'DIV_OP'),
+    )
 
     # Definición de la gramática
     def p_program(self, p):
@@ -105,14 +115,14 @@ class MyParser:
                      | while_statement
                      | for_statement
                      | input_statement
-                     | increment_statement'''
+                     | increment_statement
+                     | do_statement'''
         p[0] = p[1]
 
     def p_declaration(self, p):
-        '''declaration : INT ID ASSIGN NUMBER SEMICOLON
-                       | FLOAT ID ASSIGN DECIMAL SEMICOLON
-                       | STRING ID ASSIGN TEXT SEMICOLON
-                       | FLOAT ID ASSIGN NUMBER SEMICOLON'''
+        '''declaration : INT ID ASSIGN expression SEMICOLON
+                       | FLOAT ID ASSIGN expression SEMICOLON
+                       | STRING ID ASSIGN TEXT SEMICOLON'''
         if p[1] == 'INT' and isinstance(p[4], int):
             self.variables[p[2]] = ('int', p[4])
         elif p[1] == 'FLOAT' and (isinstance(p[4], float) or isinstance(p[4], int)):
@@ -144,12 +154,17 @@ class MyParser:
         p[0] = ('if', p[3], p[6])
 
     def p_while_statement(self, p):
-        '''while_statement : WHILE LPAREN condition RPAREN LBRACE statements RBRACE'''
-        p[0] = ('while', p[3], p[6])
+        '''while_statement : WHILE LPAREN condition RPAREN statements ENDWHILE'''
+        p[0] = ('while', p[3], p[5])
 
     def p_for_statement(self, p):
         '''for_statement : FOR LPAREN ID IN RANGE LPAREN NUMBER COMMA NUMBER RPAREN RPAREN LBRACE statements RBRACE'''
         p[0] = ('for', p[3], p[7], p[9], p[13])
+    
+    
+    def p_do_statement(self, p):
+        '''do_statement : DO statements ENDDO'''
+        p[0] = ('do', p[2])
 
     def p_condition(self, p):
         '''condition : expression EQ expression
@@ -164,8 +179,15 @@ class MyParser:
     def p_expression(self, p):
         '''expression : NUMBER
                       | DECIMAL
-                      | ID'''
-        p[0] = p[1]
+                      | ID
+                      | expression PLUS_OP expression
+                      | expression MINUS_OP expression
+                      | expression MULT_OP expression
+                      | expression DIV_OP expression'''
+        if len(p) == 2:
+            p[0] = p[1]
+        else:
+            p[0] = ('op', p[2], p[1], p[3])
 
     def p_input_statement(self, p):
         '''input_statement : INPUT LPAREN TEXT RPAREN SEMICOLON'''
@@ -201,6 +223,9 @@ class MyParser:
         return tokens
 
     def parse(self, data):
+        self.errors_syntax = []
+        self.errors_semantic = []
+        self.variables = {}
         result = self.parser.parse(data)
 
         if self.errors_syntax:
@@ -224,26 +249,21 @@ if __name__ == "__main__":
     parser = MyParser()
 
     data = '''
-    INT EDAD = 328738723;
-    FLOAT B = 5.0;
-    STRING M = "ERES MAYOR";
-    STRING N = "ERES MENOR";
-    IF (EDAD == 34 AND 5 > 7) {
-        WHILE (EDAD > 70) {
-            INPUT("holas");
-            EDAD ++;
-        }
-    }
-    WHILE (100 > 56) {
-        FOR (i IN RANGE(1, 400)) {
-            B = 50.4;
-        }
-    }
+    INT a=0;
+    INT b=10;
+    INT c=0;
+    DO 
+        a=3*b;
+        c=2+a;
+    ENDDO
+    WHILE (a==2)
+        b=10;
+    ENDWHILE
     '''
 
     result = parser.parse(data)
     lexer = parser.lex_parse(data)
     for token in lexer:
         print(token)
-    
+
     print("esto es el result :", result)
